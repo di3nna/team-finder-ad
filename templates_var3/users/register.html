@@ -12,15 +12,32 @@
     <h2>Регистрация</h2>
     <form method="post">
         {% csrf_token %}
-        <div class="name-fields">
-            <div>{{ form.name.label_tag }} {{ form.name }}</div>
-            <div>{{ form.surname.label_tag }} {{ form.surname }}</div>
+        
+        <div class="form-field">
+            <label for="name">Имя:</label>
+            <input type="text" name="name" id="name" required>
         </div>
-        {{ form.email.label_tag }} {{ form.email }}
-        {{ form.password.label_tag }} {{ form.password }}
-        {% for error in form.errors.values %}
-        <p style="color: red;">{{error}}</p>
-        {% endfor %}
+        
+        <div class="form-field">
+            <label for="surname">Фамилия:</label>
+            <input type="text" name="surname" id="surname" required>
+        </div>
+        
+        <div class="form-field">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+        
+        <div class="form-field">
+            <label for="password">Пароль:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        
+        <div class="form-field">
+            <label for="phone">Телефон:</label>
+            <input type="text" name="phone" id="phone" placeholder="+79999999999">
+        </div>
+        
         <button type="submit">Зарегистрироваться</button>
     </form>
     <p class="auth-link">Уже есть аккаунт? <a href="{% url 'users:login' %}">Войти</a></p>

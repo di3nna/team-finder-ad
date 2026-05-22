@@ -111,32 +111,39 @@
     });
 
     async function addSkillById(skillId) {
+      const formData = new URLSearchParams();
+      formData.append('skill_id', skillId);
+      
       const res = await fetch(`/projects/${projectId}/skills/add/`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
           "X-CSRFToken": getCookie("csrftoken"),
         },
-        body: JSON.stringify({ skill_id: skillId }),
+        body: formData.toString(),
       });
       if (res.ok) {
         const skill = await res.json();
-        appendChip(skill.id, skill.name);
+        const skillName = document.querySelector(`.suggestion-item[data-id="${skillId}"]`)?.textContent || 'Навык';
+        appendChip(skill.skill_id, skillName);
       }
     }
 
     async function addSkillByName(name) {
+      const formData = new URLSearchParams();
+      formData.append('name', name);
+      
       const res = await fetch(`/projects/${projectId}/skills/add/`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
           "X-CSRFToken": getCookie("csrftoken"),
         },
-        body: JSON.stringify({ name }),
+        body: formData.toString(),
       });
       if (res.ok) {
         const skill = await res.json();
-        appendChip(skill.id, skill.name);
+        appendChip(skill.skill_id, name);
       }
     }
 
@@ -147,8 +154,12 @@
       chip.className = "skill-chip";
       chip.dataset.id = id;
       chip.innerHTML = `${name} <button type="button" class="remove-skill-btn" aria-label="Удалить" title="Удалить">×</button>`;
-
-      container.insertBefore(chip, addBtn);
+      
+      if (addBtn && addBtn.parentNode === container) {
+        container.insertBefore(chip, addBtn);
+      } else {
+        container.appendChild(chip);
+      }
 
       const empty = container.querySelector(".skill-empty");
       if (empty) empty.remove();

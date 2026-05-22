@@ -5,6 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/project_list.css' %}">
+<link rel="stylesheet" href="{% static 'css/skills.css' %}">
 {% endblock %}
 
 {% with page_id="projects-list" %}
@@ -12,7 +13,7 @@
 <div class="project-container">
     <div class="project-header">
         <h2 class="project-title">Актуальные проекты</h2>
-        {% if projects %}
+        {% if user.is_authenticated %}
             <a href="/projects/create-project" class="black-button">+ Создать проект</a>
         {% endif %}
     </div>
@@ -22,13 +23,13 @@
         <span class="filter-label">Фильтр по необходимым навыкам:</span>
         <div class="filter-chips">
             {% for skill in all_skills %}
-            <a href="?skill={{ skill }}"
-               class="filter-chip {% if active_skill == skill %}active{% endif %}">
-                {{ skill }}
+            <a href="?skill={{ skill.name }}"
+               class="filter-chip {% if active_skill and active_skill.id == skill.id %}active{% endif %}">
+                {{ skill.name }}
             </a>
             {% endfor %}
             {% if active_skill %}
-            <a href="/projects/list" class="filter-reset">Сбросить</a>
+            <a href="{% url 'project_list' %}" class="filter-reset">Сбросить</a>
             {% endif %}
         </div>
     </div>
@@ -40,8 +41,22 @@
         {% include 'includes/empty-project-card.html' with empty_title="Пока нет проектов" empty_message="Создавайте проекты и делитесь ими с другими пользователями!" button_link="/projects/create-project" button_text="+ Создать проект" %}
         {% endfor %}
     </div>
-    {% include 'includes/project-fav-toggle.js' %}
-</div>
 
+    {% if page_obj.has_other_pages %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1{% if active_skill %}&skill={{ active_skill.name }}{% endif %}">« Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if active_skill %}&skill={{ active_skill.name }}{% endif %}">Предыдущая</a>
+        {% endif %}
+        
+        <span class="current-page">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+        
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if active_skill %}&skill={{ active_skill.name }}{% endif %}">Следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if active_skill %}&skill={{ active_skill.name }}{% endif %}">Последняя »</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
 {% endwith %}
