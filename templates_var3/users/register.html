@@ -14,29 +14,43 @@
         {% csrf_token %}
         
         <div class="form-field">
-            <label for="name">Имя:</label>
-            <input type="text" name="name" id="name" required>
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {{ form.email.errors }}
         </div>
         
         <div class="form-field">
-            <label for="surname">Фамилия:</label>
-            <input type="text" name="surname" id="surname" required>
+            {{ form.name.label_tag }}
+            {{ form.name }}
         </div>
         
         <div class="form-field">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
+            {{ form.surname.label_tag }}
+            {{ form.surname }}
         </div>
         
         <div class="form-field">
-            <label for="password">Пароль:</label>
-            <input type="password" name="password" id="password" required>
+            {{ form.phone.label_tag }}
+            {{ form.phone }}
         </div>
         
         <div class="form-field">
-            <label for="phone">Телефон:</label>
-            <input type="text" name="phone" id="phone" placeholder="+79999999999">
+            {{ form.password.label_tag }}
+            {{ form.password }}
         </div>
+        
+        <div class="form-field">
+            {{ form.confirm_password.label_tag }}
+            {{ form.confirm_password }}
+        </div>
+        
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         
         <button type="submit">Зарегистрироваться</button>
     </form>
