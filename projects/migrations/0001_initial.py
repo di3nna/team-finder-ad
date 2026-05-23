@@ -15,24 +15,66 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Skill',
+            name="Skill",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=124, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=124, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Project',
+            name="Project",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('description', models.TextField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('github_url', models.URLField(blank=True, null=True)),
-                ('status', models.CharField(choices=[('open', 'Открытый'), ('closed', 'Закрытый')], default='open', max_length=6)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='owned_projects', to=settings.AUTH_USER_MODEL)),
-                ('participants', models.ManyToManyField(blank=True, related_name='participated_projects', to=settings.AUTH_USER_MODEL)),
-                ('skills', models.ManyToManyField(blank=True, related_name='projects', to='projects.skill')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                ("description", models.TextField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("github_url", models.URLField(blank=True, null=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("open", "Открытый"), ("closed", "Закрытый")],
+                        default="open",
+                        max_length=6,
+                    ),
+                ),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="owned_projects",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "participants",
+                    models.ManyToManyField(
+                        blank=True,
+                        related_name="participated_projects",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "skills",
+                    models.ManyToManyField(
+                        blank=True, related_name="projects", to="projects.skill"
+                    ),
+                ),
             ],
         ),
     ]

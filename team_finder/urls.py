@@ -5,11 +5,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', lambda request: redirect('project_list', permanent=False)),
-    path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
-    path('projects/', include('projects.urls')),
-    path('', include('projects.urls')),
+    path("", lambda request: redirect("project_list", permanent=False)),
+    path("admin/", admin.site.urls),
+    path("users/", include("users.urls")),
+    path("projects/", include("projects.urls")),
+    path("", include("projects.urls")),
 ]
 
 if settings.DEBUG:
